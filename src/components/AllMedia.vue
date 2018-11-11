@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="ui raised container segments">
   <div class="ui raised container segment" id=".vue-title">
     <h2 class="ui header">{{msg}}</h2>
   </div>
-    <div id="app1">
+    <div class="ui raised container segment" id="data" >
       <v-client-table :columns="columns" :data="media" :options="options">
       </v-client-table>
     </div>

@@ -5,6 +5,7 @@ import AllMedia from '@/components/AllMedia'
 import Games from '@/components/Games'
 import Movies from '@/components/Movies'
 import About from '@/components/About'
+import AddMedia from '@/components/AddMedia'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path: '/addmedia',
+      name: 'AddMedia',
+      component: AddMedia
     }
   ]
 })

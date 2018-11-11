@@ -9,5 +9,9 @@ export default {
   },
   fetchAllGames () {
     return Api().get('/media/games')
+  },
+  postMedia (media) {
+    return Api().post('/media', media,
+      {headers: {'Content-type': 'application/json'}})
   }
 }
