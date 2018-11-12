@@ -53,6 +53,6 @@ export default {
     background-color: slategrey;
   }
   i{
-    color: #122034;
+    color: ghostwhite;
   }
 </style>

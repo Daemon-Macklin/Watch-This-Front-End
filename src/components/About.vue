@@ -1,6 +1,8 @@
 <template>
-  <div class="ui raised container segment">
-    <h2 class="ui header">{{msg}}</h2>
+  <div class="ui raised container segments">
+  <div class="ui center aligned raised container segment" id="app">
+    <h2 class="header">{{msg}}</h2>
+  </div>
   </div>
 </template>
 
@@ -16,4 +18,12 @@ export default {
 </script>
 
 <style>
+  #app{
+    width: 65%;
+    margin: 0 auto;
+    background-color: slategray;
+  }
+  h2{
+    color:ghostwhite;
+  }
 </style>
