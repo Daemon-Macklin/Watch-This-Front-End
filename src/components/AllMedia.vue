@@ -3,8 +3,9 @@
   <div class="ui raised container segment" id=".vue-title">
     <h2 class="ui header">{{msg}}</h2>
   </div>
-    <div class="ui raised container segment" id="data" >
+    <div class="ui raised container segment" id="app" >
       <v-client-table :columns="columns" :data="media" :options="options">
+        <a slot="uri" slot-scope="props" target="_blank" href=""><i class="center aligned fa fa-search " style="padding: 5px"></i></a>
       </v-client-table>
     </div>
   </div>
@@ -23,13 +24,14 @@ export default {
       msg: 'All media',
       media: [],
       errors: [],
-      columns: ['type', 'title', 'genre', 'rating'],
+      columns: ['type', 'title', 'genre', 'rating', 'uri'],
       options: {
         headings: {
           type: 'Type',
           title: 'Title',
           genre: 'Genre',
-          rating: 'Rating'
+          rating: 'Rating',
+          uri: 'View'
         }
       }
     }
@@ -53,16 +55,5 @@ export default {
 }
 </script>
 
-<style scoped>
-  .vue-title {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 45pt;
-    margin-bottom: 10px;
-  }
-
-  #app1 {
-    width: 60%;
-    margin: 0 auto;
-  }
+<style>
 </style>

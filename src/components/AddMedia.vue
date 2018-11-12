@@ -1,36 +1,50 @@
 <template>
   <div class="ui raised container segments">
-    <div class="ui raised container segment" id=".vue-title">
+    <div class="ui raised container segment">
     <h2 class="ui header">{{msg}}</h2>
     </div>
-    <div class="ui raised container segment" id="data">
-      <form @submit.prevent="submit">
-        <div class="form-group">
-          <label class="form-label">Select Payment Type</label>
-          <select id="paymenttype" name="paymenttype" class="form-control" type="text" v-model="paymenttype">
-            <option value="null" selected disabled hidden>Choose Payment Type</option>
-            <option value="Direct">Direct</option>
-            <option value="PayPal">PayPal</option>
-            <option value="Visa">Visa</option>
-          </select>
+    <div class="ui raised container segment" id="app">
+      <form @submit.prevent="submit" class="ui form">
+        <div class="two fields">
+          <div class="field" :class="{ 'form-group--error': $v.title.$error }">
+            <label class="form__label">Title
+            <input class="form__input" v-model.trim="$v.title.$model"/>
+            </label>
+          </div>
+          <div class="field">
+            <label class="form__label">Youtube Link
+            <input class="form__input" v-model.trim="youtubeLink"/>
+            </label>
+          </div>
         </div>
-        <div class="form-group" :class="{ 'form-group--error': $v.amount.$error }">
-          <label class="form-control-label" name="amount">Amount (Enter a number between 1 and 1000)</label>
-          <input class="form__input" type="number" v-model.trim="amount"/>
+        <div class="two fields">
+          <div class="field">
+            <label class="form-label">Genre</label>
+            <select id="genre" name="genre" class="form-control" type="text" v-model="genre">
+              <option value="null" selected disabled hidden>Genre</option>
+              <option value="Action">Action</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Animation">Animation</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="form-label">Type</label>
+            <select id="type" name="type" class="form-control" type="text" v-model="type">
+              <option value="null" selected disabled hidden>Genre</option>
+              <option value="Movie">Movie</option>
+              <option value="Game">Game</option>
+            </select>
+          </div>
         </div>
-        <div class="error" v-if="!$v.amount.between">Amount must be between 1 and 1000</div>
-        <div class="form-group" :class="{ 'form-group--error': $v.message.$error }">
-          <label class="form__label">Personal Message</label>
-          <input class="form__input" v-model.trim="$v.message.$model"/>
-        </div>
-        <div class="error" v-if="!$v.message.required">Message is Required</div>
-        <div class="error" v-if="!$v.message.minLength">Message must have at least {{$v.message.$params.minLength.min}} letters.</div>
         <p>
-          <button class="btn btn-primary btn1" type="submit" :disabled="submitStatus === 'PENDING'">Make Donation</button>
+          <button class="btn btn-primary btn1" type="submit" :disabled="submitStatus === 'PENDING'">Submit Media</button>
         </p>
-        <p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your Donation!</p>
+        <p class="typo__p" v-if="submitStatus === 'OK'">Media Submitted</p>
         <p class="typo__p" v-if="submitStatus === 'ERROR'">Please Fill in the Form Correctly.</p>
-        <p class="typo__p" v-if="submitStatus === 'PENDING'">Donating...</p>
+        <p class="typo__p" v-if="submitStatus === 'PENDING'">Submitting</p>
       </form>
     </div>
   </div>
@@ -43,6 +57,7 @@ import Vue from 'vue'
 import VueForm from 'vueform'
 import Vuelidate from 'vuelidate'
 import VueSweetalert from 'vue-sweetalert'
+import { required, minLength } from 'vuelidate/lib/validators'
 
 Vue.use(VueForm, {
   inputClasses: {
@@ -59,12 +74,19 @@ export default {
     return {
       errors: [],
       msg: 'Add Media',
-      type: '',
+      type: 'Undefined',
       title: '',
+      genre: 'Undefined',
       youtubeLink: '',
-      rating: 0,
       userId: '',
-      reviews: []
+      reviews: [],
+      submitStatus: null
+    }
+  },
+  validations: {
+    title: {
+      required,
+      minLength: minLength(3)
     }
   },
   methods: {
@@ -106,6 +128,5 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
 </style>

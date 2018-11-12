@@ -2,8 +2,8 @@
   <div>
     <b-navbar-nav class="ui left fixed vertical menu" id="menu">
     <div class="item">
-        <img class="ui mini image" src="../src/assets/home-tv.png">
-      </div>
+        <img class="ui small image" src="https://media1.tenor.com/images/a79023c01372d18caedda850481aed68/tenor.gif?itemid=3532334">
+    </div>
           <b-nav-item id="home" to="/#" v-on:click="setActive('home')" class="link item">
             <i class="fa fa-home" style="padding: 5px"> Home </i>
           </b-nav-item>
@@ -50,9 +50,9 @@ export default {
 
 <style>
   #menu{
-    background-color: transparent;
+    background-color: slategrey;
   }
   i{
-    color: black;
+    color: #122034;
   }
 </style>

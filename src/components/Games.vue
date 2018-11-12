@@ -3,7 +3,7 @@
   <div class="ui raised container segment">
     <h2 class="ui header">{{msg}}</h2>
   </div>
-    <div class="ui raised container segment" id="data">
+    <div class="ui raised container segment" id="app">
       <v-client-table :columns="columns" :data="games" :options="options">
       </v-client-table>
     </div>
@@ -52,16 +52,5 @@ export default {
 }
 </script>
 
-<style scoped>
-  .vue-title {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 45pt;
-    margin-bottom: 10px;
-  }
-
-  #app1 {
-    width: 60%;
-    margin: 0 auto;
-  }
+<style>
 </style>
