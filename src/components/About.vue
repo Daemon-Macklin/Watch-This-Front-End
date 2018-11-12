@@ -1,5 +1,5 @@
 <template>
-  <div class="ui raised container segments">
+  <div>
   <div class="ui center aligned raised container segment" id="app">
     <h2 class="header">{{msg}}</h2>
   </div>
@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #app{
     width: 65%;
     margin: 0 auto;

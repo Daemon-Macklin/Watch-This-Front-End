@@ -23,15 +23,67 @@
             <i class="fa fa-question" style="padding: 5px"> About </i>
           </b-nav-item>
       </b-navbar-nav>
-    <router-view/>
+    <div class="ui right fixed vertical menu" id="menu">
+      <div class="ui raised container segment">
+      <form @submit.prevent="login" class="ui form">
+          <label>Login</label>
+          <div class="ui small field">
+            <label class="label"> Email
+            <input class="form__input" v-model.trim="$v.email.$model"/>
+            </label>
+          </div>
+          <div class="ui small field">
+            <label class="label"> Password
+            <input class="form__input" type="password" v-model.trim="$v.password.$model"/>
+            </label>
+          </div>
+        <p>
+          <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Login</button>
+        </p>
+        <p class="typo__p" v-if="submitStatus === 'EMAIL'">User Not Found</p>
+        <p class="typo__p" v-if="submitStatus === 'PASSWORD'">Invalid Password</p>
+        <p class="typo__p" v-if="submitStatus === 'SIGNIN'">Signed In</p>
+      </form>
+    </div>
+    </div>
+  <router-view/>
   </div>
 </template>
 
 <script>
+import WatchThisService from '@/services/watchthisservice'
+import Vue from 'vue'
+import VueForm from 'vueform'
+import Vuelidate from 'vuelidate'
+import VueSweetalert from 'vue-sweetalert'
+import { required } from 'vuelidate/lib/validators'
+
+Vue.use(VueForm, {
+  inputClasses: {
+    valid: 'form-control-success',
+    invalid: 'form-control-danger'
+  }
+})
+Vue.use(Vuelidate)
+Vue.use(VueSweetalert)
+
 export default {
   name: 'App',
   data () {
-    return { activeItem: '' }
+    return {
+      activeItem: '',
+      email: '',
+      password: '',
+      submitStatus: null
+    }
+  },
+  validations: {
+    email: {
+      required
+    },
+    password: {
+      required
+    }
   },
   methods: {
     setActive: function (menuItem) {
@@ -43,6 +95,44 @@ export default {
       }
       document.getElementById(menuItem).setAttribute('class', 'active link item')
       this.activeItem = menuItem
+    },
+    login: function () {
+      console.log('submiting...')
+      console.log('submit!')
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          let user = {
+            email: this.email,
+            password: this.password
+          }
+          this.user = user
+          this.submitUser(this.user)
+        }, 500)
+      }
+    },
+    submitUser: function (user) {
+      WatchThisService.login(user)
+        .then(response => {
+          console.log(response.data)
+          if (response.data === 'Invalid Password') {
+            console.log('Invalid Password')
+            this.submitStatus = 'PASSWORD'
+          } else if (response.data === "Can't find user") {
+            console.log('User not found')
+            this.submitStatus = 'EMAIL'
+          } else {
+            this.submitStatus = 'SIGNIN'
+          }
+        })
+        .catch(error => {
+          this.errors.push(error)
+          console.log(error)
+        })
     }
   }
 }
@@ -54,5 +144,11 @@ export default {
   }
   i{
     color: ghostwhite;
+  }
+  label{
+    color: black;
+  }
+  p{
+    color: black;
   }
 </style>

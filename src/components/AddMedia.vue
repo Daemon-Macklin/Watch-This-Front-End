@@ -1,25 +1,25 @@
 <template>
-  <div class="ui raised container segments">
+  <div>
     <div class="ui center aligned raised container segment" id="app">
     <h2 class="header">{{msg}}</h2>
     </div>
+    <h4 class="ui horizontal divider">
+    </h4>
     <div class="ui raised container segment" id="app">
       <form @submit.prevent="submit" class="ui form">
         <div class="two fields">
           <div class="field" :class="{ 'form-group--error': $v.title.$error }">
-            <label class="form__label">Title
+            <label class="label">Title </label>
             <input class="form__input" v-model.trim="$v.title.$model"/>
-            </label>
           </div>
           <div class="field">
-            <label class="form__label">Youtube Link
+            <label class="label">Youtube Link </label>
             <input class="form__input" v-model.trim="youtubeLink"/>
-            </label>
           </div>
         </div>
         <div class="two fields">
           <div class="field">
-            <label class="form-label">Genre</label>
+            <label class="label">Genre </label>
             <select id="genre" name="genre" class="form-control" type="text" v-model="genre">
               <option value="null" selected disabled hidden>Genre</option>
               <option value="Action">Action</option>
@@ -31,7 +31,7 @@
             </select>
           </div>
           <div class="field">
-            <label class="form-label">Type</label>
+            <label class="label">Type </label>
             <select id="type" name="type" class="form-control" type="text" v-model="type">
               <option value="null" selected disabled hidden>Genre</option>
               <option value="Movie">Movie</option>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <p>
-          <button class="btn btn-primary btn1" type="submit" :disabled="submitStatus === 'PENDING'">Submit Media</button>
+          <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
         </p>
         <p class="typo__p" v-if="submitStatus === 'OK'">Media Submitted</p>
         <p class="typo__p" v-if="submitStatus === 'ERROR'">Please Fill in the Form Correctly.</p>
@@ -114,7 +114,6 @@ export default {
             title: this.title,
             type: this.type,
             genre: this.genre,
-            rating: this.rating,
             youtubeLink: this.youtubeLink,
             userId: '',
             reviews: []
@@ -128,13 +127,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #app{
     width: 65%;
     margin: 0 auto;
     background-color: slategray;
   }
-  h2{
+  h2, label{
     color:ghostwhite;
   }
   button{

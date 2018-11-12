@@ -1,9 +1,11 @@
 <template>
-  <div class="ui center aligned raised container segments">
-  <div class="ui raised container segment" id="app">
+  <div>
+  <div class="ui center aligned raised container segment" id="app">
     <h2 class="header">{{msg}}</h2>
   </div>
-    <div class="ui raised container segment" id="app">
+    <h4 class="ui horizontal divider">
+    </h4>
+    <div class="ui center aligned raised container segment" id="app">
       <v-client-table :columns="columns" :data="media" :options="options">
         <a slot="uri" slot-scope="props" target="_blank" href=""><i class="center aligned fa fa-search " style="padding: 5px"></i></a>
       </v-client-table>
@@ -55,7 +57,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #app{
     width: 65%;
     margin: 0 auto;
