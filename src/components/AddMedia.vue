@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="ui center aligned raised container segment" id="app">
-    <h2 class="header">{{msg}}</h2>
+    <h2 class="ui header" id="title">{{msg}}</h2>
     </div>
     <h4 class="ui horizontal divider">
     </h4>
@@ -28,6 +28,7 @@
               <option value="Fantasy">Fantasy</option>
               <option value="Sci-Fi">Sci-Fi</option>
               <option value="Animation">Animation</option>
+              <option value="Horror">Horror</option>
             </select>
           </div>
           <div class="field">

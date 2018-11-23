@@ -5,22 +5,34 @@
         <img class="ui small image" src="https://media1.tenor.com/images/a79023c01372d18caedda850481aed68/tenor.gif?itemid=3532334">
     </div>
           <b-nav-item id="home" to="/#" v-on:click="setActive('home')" class="link item">
-            <i class="fa fa-home" style="padding: 5px"> Home </i>
+            <p id="menuItem">
+              <i class="fa fa-home" style="padding: 5px"></i>Home
+            </p>
           </b-nav-item>
           <b-nav-item id="allmedia" to="/allmedia" v-on:click="setActive('allmedia')" class ="link item">
-          <i class="fa fa-book" style="padding: 5px">All Media</i>
+            <p id="menuItem">
+              <i class="fa fa-book" style="padding: 5px"></i>All Media
+            </p>
           </b-nav-item>
           <b-nav-item id="movies" to="/movies" v-on:click="setActive('movies')" class ="link item">
-            <i class="fa fa-film" style="padding: 5px"> Movies </i>
+            <p id="menuItem">
+              <i class="fa fa-film" style="padding: 5px"></i>Movies
+            </p>
           </b-nav-item>
           <b-nav-item id="games" to="/games" v-on:click="setActive('games')" class ="link item">
-            <i class="fa fa-gamepad" style="padding: 5px"> Games </i>
+            <p id="menuItem">
+              <i class="fa fa-gamepad" style="padding: 5px"></i>Games
+            </p>
           </b-nav-item>
           <b-nav-item id="addmedia" to="/addmedia" v-on:click="setActive('addmedia')" class ="link item">
-            <i class="fa fa-plus-square" style="padding: 5px"> Add Media </i>
+            <p id="menuItem">
+              <i class="fa fa-plus-square" style="padding: 5px"></i>Add Media
+            </p>
           </b-nav-item>
           <b-nav-item id="about" to="/about" v-on:click="setActive('about')" class ="link item">
-            <i class="fa fa-question" style="padding: 5px"> About </i>
+            <p id="menuItem">
+              <i class="fa fa-question" style="padding: 5px"></i>About
+            </p>
           </b-nav-item>
       </b-navbar-nav>
     <div class="ui right fixed vertical menu" id="menu">
@@ -142,6 +154,13 @@ export default {
   #menu{
     background-color: slategrey;
   }
+  #menuItem{
+    color: ghostwhite;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+  }
+  #title{
+    color: ghostwhite;
+  }
   i{
     color: ghostwhite;
   }
@@ -150,5 +169,9 @@ export default {
   }
   p{
     color: black;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
+  #home{
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   }
 </style>

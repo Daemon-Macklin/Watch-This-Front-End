@@ -1,13 +1,17 @@
 <template>
   <div>
   <div class="ui center aligned raised container segment" id="app">
-    <h2 class="header">{{msg}}</h2>
+    <h2 class="ui header" id="title">{{msg}}</h2>
   </div>
     <h4 class="ui horizontal divider">
     </h4>
     <div class="ui center aligned raised container segment" id="app">
       <v-client-table :columns="columns" :data="media" :options="options">
-        <a slot="uri" slot-scope="props" target="_blank" href=""><i class="center aligned fa fa-search " style="padding: 5px"></i></a>
+        <template slot="_id" slot-scope="props">
+          <b-link :to="{ name: 'ViewMedia', params: {mediaId: props.row._id}}">
+          <i class="center aligned fa fa-search " style="padding: 5px"></i>
+          </b-link>
+        </template>
       </v-client-table>
     </div>
   </div>
@@ -26,14 +30,14 @@ export default {
       msg: 'All media',
       media: [],
       errors: [],
-      columns: ['type', 'title', 'genre', 'rating', 'uri'],
+      columns: ['type', 'title', 'genre', 'rating', '_id'],
       options: {
         headings: {
           type: 'Type',
           title: 'Title',
           genre: 'Genre',
           rating: 'Rating',
-          uri: 'View'
+          _id: 'View'
         }
       }
     }
@@ -52,6 +56,10 @@ export default {
           this.errors.push(error)
           console.log(error)
         })
+    },
+    viewItem: function (media) {
+      console.log('Item')
+      console.log(media)
     }
   }
 }
@@ -65,5 +73,8 @@ export default {
   }
   h2{
     color:ghostwhite;
+  }
+  i{
+    color:black;
   }
 </style>

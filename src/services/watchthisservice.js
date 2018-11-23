@@ -17,5 +17,8 @@ export default {
   login (user) {
     return Api().post('/user/signin', user,
       {headers: {'Content-type': 'application/json'}})
+  },
+  getMediaById (id) {
+    return Api().get(`/media/${id}`)
   }
 }
