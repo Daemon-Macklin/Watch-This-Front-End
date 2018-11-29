@@ -46,16 +46,25 @@
         </div>
       </div>
       <div class="ui right fixed center aligned raised card">
-        <div class="ui left aligned raised container segment">
-            <youtube :width=360 :height=315 :video-id="videoId" ref="youtube"></youtube>
+        <div class="ui left aligned raised container segment" style="width:100%; height:100%;">
+            <youtube style="width:100%; height:100%;" :video-id="videoId" ref="youtube"></youtube>
         </div>
       </div>
     </div>
     </div>
+    <h4 class="ui horizontal divider"></h4>
+    <div class="ui center aligned raised container segment" id="app">
+      <h1></h1>
+    </div>
       <h4 class="ui horizontal divider"></h4>
       <div class="ui center aligned raised container segment" id="app">
         <v-client-table :columns="columns" :data="media.reviews" :options="options">
-          <template slot="" slot-scope="props">
+          <template slot="upvotes" slot-scope="props">
+            <b-link>
+              <p>
+                <i class="center aligned thumbs up icon" style="padding: 5px">{{props.row.upvotes}}</i>
+              </p>
+            </b-link>
           </template>
         </v-client-table>
       </div>
@@ -101,23 +110,25 @@ export default {
         .then(response => {
           this.media = response.data[0]
           console.log('------------------------')
-          console.log(this.media.reviews[0].review)
           if (this.media.rating < 2.5) {
             this.rating = 'BAD'
           }
           if (this.media.youtubeLink === '') {
             this.videoId = 'dQw4w9WgXcQ'
+            console.log('A')
           } else {
             if (this.media.youtubeLink.substring(0, 5) === 'https') {
               this.videoId = this.media.youtubeLink.substring(32)
+              console.log('B')
             } else {
               this.videoId = this.media.youtubeLink
+              console.log('C')
             }
           }
         })
         .catch(error => {
           this.errors.push(error)
-          console.log(error)
+          // console.log(error)
         })
     }
   }
