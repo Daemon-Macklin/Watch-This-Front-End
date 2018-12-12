@@ -14,9 +14,9 @@
         </div>
       </div>
       <p>
-        <button class="ui left aligned positive button" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
+        <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
       </p>
-      <p class="typo__p" v-if="submitStatus === 'OK'">Media Submitted</p>
+      <p class="typo__p" v-if="submitStatus === 'OK'">Review Submitted</p>
       <p class="typo__p" v-if="submitStatus === 'ERROR'">Please Fill in the Form Correctly.</p>
       <p class="typo__p" v-if="submitStatus === 'PENDING'">Submitting</p>
     </form>
@@ -65,6 +65,7 @@ export default {
       WatchThisService.postReview(review, this.$route.params.mediaId)
         .then(response => {
           console.log(response)
+          location.reload()
         })
         .catch(error => {
           this.errors.push(error)

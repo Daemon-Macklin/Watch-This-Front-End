@@ -47,7 +47,7 @@
               <div class="content">
                 <p class="header">Submitted by</p>
                 <div class="description">
-                  {{username}}
+                  {{userName}}
                 </div>
               </div>
             </div>
@@ -68,11 +68,11 @@
       <h4 class="ui horizontal divider"></h4>
       <div class="ui center aligned raised container segment" id="app">
         <h2 class="ui header" id="title">Reviews </h2>
-        <v-client-table :columns="columns" :data="media.reviews" :options="options">
+        <v-client-table :columns="columns" :data="media.reviews" :options="options" ref="reviews">
           <template slot="upvotes" slot-scope="props">
             <b-link>
               <p>
-                <i class="center aligned thumbs up icon" style="padding: 5px">{{props.row.upvotes}}</i>
+                <i class="center aligned thumbs up icon" @click="upvote(props.row._id)" style="padding: 5px">{{props.row.upvotes}}</i>
               </p>
             </b-link>
           </template>
@@ -98,7 +98,7 @@ export default {
   data () {
     return {
       media: null,
-      username: null,
+      userName: null,
       errors: [],
       rating: 'GOOD',
       videoId: '',
@@ -118,7 +118,6 @@ export default {
   },
   created () {
     this.getMedia()
-    this.getUserName()
   },
   methods: {
     getMedia: function () {
@@ -142,10 +141,37 @@ export default {
               console.log('C')
             }
           }
+          this.getUserName(this.media.userId)
         })
         .catch(error => {
           this.errors.push(error)
           // console.log(error)
+        })
+    },
+    getUserName: function (id) {
+      console.log('Getting username')
+      if (id === '') {
+        this.userName = 'Anonymous'
+      } else {
+        WatchThisService.getUserName(id)
+          .then(response => {
+            this.userName = response.data
+          })
+          .catch(error => {
+            this.errors.push(error)
+            this.userName = 'Anonymous'
+          })
+      }
+    },
+    upvote: function (reviewId) {
+      console.log('Upvoting')
+      WatchThisService.upvote(this.$route.params.mediaId, reviewId)
+        .then(response => {
+          console.log(response)
+          this.getMedia()
+        })
+        .catch(error => {
+          this.errors.push(error)
         })
     }
   }

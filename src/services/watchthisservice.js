@@ -24,5 +24,11 @@ export default {
   },
   getMediaById (id) {
     return Api().get(`/media/${id}`)
+  },
+  getUserName (id) {
+    return Api().get(`/user/findUserName/${id}`)
+  },
+  upvote (id, reviewId) {
+    return Api().put(`/media/${id}/upvoteReview/${reviewId}`)
   }
 }
