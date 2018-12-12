@@ -8,9 +8,9 @@
     </div>
     <h4 class="ui horizontal divider"></h4>
     <div class="ui center aligned raised container segment" id="app">
+      <h2 class="ui header" id="title"> About {{media.title}} </h2>
       <div class="ui two cards">
       <div class="ui left fixed center aligned raised card">
-        <h3 class="ui header"> About {{media.title}} </h3>
         <div class="ui left aligned raised container segment">
           <div class="ui relaxed divided items">
             <div class="item">
@@ -42,6 +42,15 @@
                 </div>
               </div>
             </div>
+            <div class="item">
+              <i class="Large user middle aligned icon"></i>
+              <div class="content">
+                <p class="header">Submitted by</p>
+                <div class="description">
+                  {{username}}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -58,6 +67,7 @@
     </div>
       <h4 class="ui horizontal divider"></h4>
       <div class="ui center aligned raised container segment" id="app">
+        <h2 class="ui header" id="title">Reviews </h2>
         <v-client-table :columns="columns" :data="media.reviews" :options="options">
           <template slot="upvotes" slot-scope="props">
             <b-link>
@@ -88,6 +98,7 @@ export default {
   data () {
     return {
       media: null,
+      username: null,
       errors: [],
       rating: 'GOOD',
       videoId: '',
@@ -107,6 +118,7 @@ export default {
   },
   created () {
     this.getMedia()
+    this.getUserName()
   },
   methods: {
     getMedia: function () {

@@ -14,6 +14,10 @@ export default {
     return Api().post('/media', media,
       {headers: {'Content-type': 'application/json'}})
   },
+  postReview (review, id) {
+    return Api().post(`/media/${id}/addReview`, review,
+      {headers: {'Content-type': 'application/json'}})
+  },
   login (user) {
     return Api().post('/user/signin', user,
       {headers: {'Content-type': 'application/json'}})

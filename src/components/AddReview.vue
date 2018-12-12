@@ -1,16 +1,20 @@
 <template>
-  <div class="ui raised container segment" id="app">
+  <div id="app">
+    <h2 class="ui header" id="title">Submit a Review</h2>
     <form @submit.prevent="submit" class="ui form">
+      <div class="two fields">
         <div class="field" :class="{ 'form-group--error': $v.reviewText.$error }">
           <label class="label">Review </label>
           <input class="form__input" v-model.trim="reviewText"/>
         </div>
-        <div class="field">
+        <div class="field" :class="{ 'form-group--error': $v.score.$error }">
           <label class="label">Score </label>
           <input class="form__input" v-model.trim="score"/>
+          <p> Between 0 and 5</p>
         </div>
+      </div>
       <p>
-        <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
+        <button class="ui left aligned positive button" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
       </p>
       <p class="typo__p" v-if="submitStatus === 'OK'">Media Submitted</p>
       <p class="typo__p" v-if="submitStatus === 'ERROR'">Please Fill in the Form Correctly.</p>
@@ -25,7 +29,7 @@ import Vue from 'vue'
 import VueForm from 'vueform'
 import Vuelidate from 'vuelidate'
 import VueSweetalert from 'vue-sweetalert'
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, between } from 'vuelidate/lib/validators'
 
 Vue.use(VueForm, {
   inputClasses: {
@@ -49,12 +53,16 @@ export default {
     reviewText: {
       required,
       minLength: minLength(3),
-      maxLength: maxLength(30)
+      maxLength: maxLength(60)
+    },
+    score: {
+      required,
+      between: between(0, 5)
     }
   },
   methods: {
-    submitMedia: function (review) {
-      WatchThisService.postMedia(review)
+    submitReview: function (review) {
+      WatchThisService.postReview(review, this.$route.params.mediaId)
         .then(response => {
           console.log(response)
         })
@@ -65,7 +73,6 @@ export default {
     },
     submit () {
       console.log('submiting...')
-      console.log('submit!')
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
@@ -80,7 +87,9 @@ export default {
             userId: ''
           }
           this.review = review
-          this.submitMedia(this.review)
+          console.log(review.score)
+          console.log(review.reviewText)
+          this.submitReview(this.review)
         }, 500)
       }
     }
@@ -89,5 +98,15 @@ export default {
 </script>
 
 <style scoped>
-
+  #app{
+    width: 65%;
+    margin: 0 auto;
+    background-color: slategray;
+  }
+  h2, label{
+    color:ghostwhite;
+  }
+  button{
+    color: darkblue;
+  }
 </style>
