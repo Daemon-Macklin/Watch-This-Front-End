@@ -54,7 +54,7 @@
     </div>
     <h4 class="ui horizontal divider"></h4>
     <div class="ui center aligned raised container segment" id="app">
-      <h1></h1>
+      <add-review/>
     </div>
       <h4 class="ui horizontal divider"></h4>
       <div class="ui center aligned raised container segment" id="app">
@@ -74,11 +74,13 @@
 <script>
 import Vue from 'vue'
 import WatchThisService from '@/services/watchthisservice'
+import AddReview from '@/components/AddReview'
 import VueYoutube from 'vue-youtube'
 import VueTables from 'vue-tables-2'
-Vue.use(VueTables.ClientTable, {compileTemplates: true, filterByColumn: true})
 
+Vue.use(VueTables.ClientTable, {compileTemplates: true, filterByColumn: true})
 Vue.use(VueYoutube)
+
 // import Vue from 'vue'
 
 export default {
@@ -99,6 +101,9 @@ export default {
         }
       }
     }
+  },
+  components: {
+    'add-review': AddReview
   },
   created () {
     this.getMedia()
