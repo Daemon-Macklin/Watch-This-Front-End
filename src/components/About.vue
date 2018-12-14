@@ -7,6 +7,8 @@
 </template>
 
 <script>
+// import App from '@/App'
+
 export default {
   name: 'Home',
   data () {

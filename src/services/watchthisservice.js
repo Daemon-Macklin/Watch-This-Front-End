@@ -30,5 +30,12 @@ export default {
   },
   upvote (id, reviewId) {
     return Api().put(`/media/${id}/upvoteReview/${reviewId}`)
+  },
+  authToken (token) {
+    return Api().post('/user/auth', token,
+      {headers: {'Content-type': 'application/json'}})
+  },
+  getUser (id) {
+    return Api().get(`/user/${id}`)
   }
 }

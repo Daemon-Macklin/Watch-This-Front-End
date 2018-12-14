@@ -29,6 +29,11 @@
               <i class="fa fa-plus-square" style="padding: 5px"></i>Add Media
             </p>
           </b-nav-item>
+          <b-nav-item id="user" to="/user" v-on:click="setActive('user')" class ="link item">
+            <p id="menuItem">
+              <i class="fa fa-user" style="padding: 5px"></i>User
+            </p>
+          </b-nav-item>
           <b-nav-item id="about" to="/about" v-on:click="setActive('about')" class ="link item">
             <p id="menuItem">
               <i class="fa fa-question" style="padding: 5px"></i>About
@@ -66,6 +71,7 @@
 import WatchThisService from '@/services/watchthisservice'
 import Vue from 'vue'
 import VueForm from 'vueform'
+import Cookies from 'vue-cookies'
 import Vuelidate from 'vuelidate'
 import VueSweetalert from 'vue-sweetalert'
 import { required } from 'vuelidate/lib/validators'
@@ -78,6 +84,7 @@ Vue.use(VueForm, {
 })
 Vue.use(Vuelidate)
 Vue.use(VueSweetalert)
+Vue.use(Cookies)
 
 export default {
   name: 'App',
@@ -130,7 +137,6 @@ export default {
     submitUser: function (user) {
       WatchThisService.login(user)
         .then(response => {
-          console.log(response.data)
           if (response.data === 'Invalid Password') {
             console.log('Invalid Password')
             this.submitStatus = 'PASSWORD'
@@ -139,6 +145,9 @@ export default {
             this.submitStatus = 'EMAIL'
           } else {
             this.submitStatus = 'SIGNIN'
+            console.log(response.data.userData._id)
+            this.$cookies.set('id', response.data.userData._id)
+            this.$cookies.set('token', response.data.token.toString())
           }
         })
         .catch(error => {

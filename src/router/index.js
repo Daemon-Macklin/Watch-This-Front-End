@@ -7,6 +7,7 @@ import Movies from '@/components/Movies'
 import About from '@/components/About'
 import AddMedia from '@/components/AddMedia'
 import ViewMedia from '@/components/ViewMedia'
+import User from '@/components/User'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/media/:mediaId',
       name: 'ViewMedia',
       component: ViewMedia
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User
     }
   ]
 })

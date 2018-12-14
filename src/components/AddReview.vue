@@ -45,7 +45,7 @@ export default {
   data () {
     return {
       reviewText: '',
-      score: 0,
+      score: 2.5,
       submitStatus: null
     }
   },
