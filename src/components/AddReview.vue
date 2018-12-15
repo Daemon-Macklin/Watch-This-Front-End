@@ -87,10 +87,9 @@ export default {
             upvotes: 0,
             userId: ''
           }
-          this.review = review
           console.log(review.score)
           console.log(review.reviewText)
-          this.submitReview(this.review)
+          this.submitReview(review)
         }, 500)
       }
     }

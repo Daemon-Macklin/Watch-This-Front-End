@@ -55,7 +55,7 @@
             </label>
           </div>
         <p>
-          <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Login</button>
+          <button class="ui positive button" value="submit" type="submit" :disabled="submitStatus === 'PENDING'">Login</button>
         </p>
         <p class="typo__p" v-if="submitStatus === 'EMAIL'">User Not Found</p>
         <p class="typo__p" v-if="submitStatus === 'PASSWORD'">Invalid Password</p>
@@ -93,6 +93,7 @@ export default {
       activeItem: '',
       email: '',
       password: '',
+      errors: [],
       submitStatus: null
     }
   },
@@ -116,8 +117,6 @@ export default {
       this.activeItem = menuItem
     },
     login: function () {
-      console.log('submiting...')
-      console.log('submit!')
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
@@ -145,9 +144,11 @@ export default {
             this.submitStatus = 'EMAIL'
           } else {
             this.submitStatus = 'SIGNIN'
-            console.log(response.data.userData._id)
+            console.log(response.data.userData)
             this.$cookies.set('id', response.data.userData._id)
             this.$cookies.set('token', response.data.token.toString())
+            this.$cookies.set('userName', response.data.userData.userName.toString())
+            window.location = '/home'
           }
         })
         .catch(error => {

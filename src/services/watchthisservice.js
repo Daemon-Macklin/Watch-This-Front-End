@@ -37,5 +37,9 @@ export default {
   },
   getUser (id) {
     return Api().get(`/user/${id}`)
+  },
+  addUser (user) {
+    return Api().post('/user', user,
+      {headers: {'Content-type': 'application/json'}})
   }
 }

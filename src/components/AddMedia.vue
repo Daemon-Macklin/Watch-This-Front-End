@@ -3,8 +3,7 @@
     <div class="ui center aligned raised container segment" id="app">
     <h2 class="ui header" id="title">{{msg}}</h2>
     </div>
-    <h4 class="ui horizontal divider">
-    </h4>
+    <h4 class="ui horizontal divider"></h4>
     <div class="ui raised container segment" id="app">
       <form @submit.prevent="submit" class="ui form">
         <div class="two fields">
@@ -79,7 +78,6 @@ export default {
       title: '',
       genre: 'Undefined',
       youtubeLink: '',
-      userId: '',
       reviews: [],
       submitStatus: null
     }
@@ -111,16 +109,19 @@ export default {
         this.submitStatus = 'PENDING'
         setTimeout(() => {
           this.submitStatus = 'OK'
+          let id = ''
+          if (this.$cookies.get('id') != null) {
+            id = this.$cookies.get('id')
+          }
           let media = {
             title: this.title,
             type: this.type,
             genre: this.genre,
             youtubeLink: this.youtubeLink,
-            userId: '',
+            userId: id,
             reviews: []
           }
-          this.media = media
-          this.submitMedia(this.media)
+          this.submitMedia(media)
         }, 500)
       }
     }
