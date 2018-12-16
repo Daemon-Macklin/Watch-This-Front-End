@@ -41,5 +41,11 @@ export default {
   addUser (user) {
     return Api().post('/user', user,
       {headers: {'Content-type': 'application/json'}})
+  },
+  fetchAllUserMedia (id) {
+    return Api().get(`/media/findUserMedia/${id}`)
+  },
+  fetchAllUserReview (id) {
+    return Api().get(`/media/findUserReview/${id}`)
   }
 }

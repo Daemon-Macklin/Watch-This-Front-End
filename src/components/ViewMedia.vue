@@ -68,16 +68,19 @@
       <h4 class="ui horizontal divider"></h4>
       <div class="ui center aligned raised container segment" id="app">
         <h2 class="ui header" id="title">Reviews </h2>
-        <v-client-table :columns="columns" :data="media.reviews" :options="options" ref="reviews">
-          <template slot="upvotes" slot-scope="props">
-            <b-link>
-              <p>
-                <i class="center aligned thumbs up icon" @click="upvote(props.row._id)" style="padding: 5px">{{props.row.upvotes}}</i>
-              </p>
-            </b-link>
-          </template>
-        </v-client-table>
+        <div class="row">
+          <div class="col-4" v-for="review in media.reviews" :key="review._id">
+            <b-card :key="review._id" class="mb-4" footer-tag="footer">
+              <p class="card-text">{{ review.review }}</p>
+              <small slot="footer" >
+                <span class="float-right">Upvotes: {{ review.upvotes }}</span>
+                <span class="float-left" v-if="review.userId === ''">User: Anonymous</span>
+                <span class="float-left" v-else>User: {{ review.userId }}</span>
+              </small>
+            </b-card>
+          </div>
       </div>
+  </div>
   </div>
 </template>
 

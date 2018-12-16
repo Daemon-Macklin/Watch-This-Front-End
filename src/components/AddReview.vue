@@ -81,11 +81,15 @@ export default {
         this.submitStatus = 'PENDING'
         setTimeout(() => {
           this.submitStatus = 'OK'
+          let id = ''
+          if (this.$cookies.get('id') != null) {
+            id = this.$cookies.get('id')
+          }
           let review = {
             reviewText: this.reviewText,
             score: this.score,
             upvotes: 0,
-            userId: ''
+            userId: id
           }
           console.log(review.score)
           console.log(review.reviewText)
