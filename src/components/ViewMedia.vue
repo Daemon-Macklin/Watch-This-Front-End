@@ -71,12 +71,21 @@
         <div class="row">
           <div class="col-4" v-for="review in media.reviews" :key="review._id">
             <b-card :key="review._id" class="mb-4" footer-tag="footer">
-              <p class="card-text">{{ review.review }}</p>
-              <small slot="footer" >
-                <span class="float-right">Upvotes: {{ review.upvotes }}</span>
-                <span class="float-left" v-if="review.userId === ''">User: Anonymous</span>
-                <span class="float-left" v-else>User: {{ review.userId }}</span>
-              </small>
+              <div class="ui card">
+                <div class="content">
+                  <div class="header">{{review.score}}</div>
+                  <div class="meta">
+                    {{getUserName(review.userId)}}
+                  </div>
+                  <div class="description">
+                    {{review.review}}
+                  </div>
+                </div>
+                <div class="extra content">
+                  <i class="check icon" v-on:click="upvote(review._id)"></i>
+                  {{review.upvotes}}
+                </div>
+              </div>
             </b-card>
           </div>
       </div>
@@ -144,12 +153,26 @@ export default {
               console.log('C')
             }
           }
+          this.media.reviews = this.quickSort(this.media.reviews)
           this.getUserName(this.media.userId)
         })
         .catch(error => {
           this.errors.push(error)
           // console.log(error)
         })
+    },
+    quickSort: function (arr) {
+      let len = arr.length
+      for (let i = len - 1; i >= 0; i--) {
+        for (let j = 1; j <= i; j++) {
+          if (arr[j - 1].upvotes < arr[j].upvotes) {
+            let temp = arr[j - 1]
+            arr[j - 1] = arr[j]
+            arr[j] = temp
+          }
+        }
+      }
+      return arr
     },
     getUserName: function (id) {
       console.log('Getting username')
