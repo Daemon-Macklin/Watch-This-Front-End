@@ -13,8 +13,25 @@
     <div v-if="signedIn === 'true'">
     <div class="ui center aligned raised container segment"  id="app">
       <h2 class="ui header" id="title"  > User Info </h2>
-      <h2>{{userName}}</h2>
+      <h2 v-if="update === 'false'">{{userName}}</h2>
+      <div v-if="update === 'true'">
+        <form @submit.prevent="submitUpdate" class="ui form">
+          <div class="ui field">
+            <label class="label"> Username
+              <input class="form__input" v-model.trim="$v.newUserName.$model"/>
+            </label>
+          </div>
+          <p>
+            <button class="ui positive button" value="submit" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
+          </p>
+          <p class="typo__p" v-if="submitStatus === 'ERROR'">UserName Invalid</p>
+        </form>
+      </div>
+      <div class="ui buttons">
       <button class="ui negative button" value="logout" v-on:click="logout()">Logout</button>
+      <button class="ui primary button" value="updateName" v-if="update === 'false'" v-on:click="showUpdateUserName()">Update</button>
+        <button class="ui primary button" value="updateName" v-if="update === 'true'" v-on:click="cancelUpdateUserName()">Cancel</button>
+      </div>
     </div>
     <h4 class="ui horizontal divider"></h4>
       <div class="ui center aligned raised container segment" id="app">
@@ -37,6 +54,16 @@
       <div class="ui center aligned raised container segment" id="app">
         <h2 class="ui header" id="title"> My Reviews </h2>
         <v-client-table :columns="reviewColumns" :data="review" :options="reviewOptions" ref="reviews" v-if="hasReview === 'true'">
+          <template slot="view" slot-scope="props">
+            <b-link :to="{ name: 'ViewMedia', params: {mediaId: props.row.mediaData}}">
+              <i class="center aligned fa fa-search " style="padding: 5px"></i>
+            </b-link>
+          </template>
+          <template slot="remove" slot-scope="props">
+            <b-link>
+              <i class="center aligned trash icon" v-on:click="removeReview(props.row.mediaData, props.row.review._id)"></i>
+            </b-link>
+          </template>
         </v-client-table>
         <h2 v-if="hasReview === 'false'">No Reviews Submitted</h2>
       </div>
@@ -50,6 +77,19 @@ import Cookies from 'vue-cookies'
 import Vue from 'vue'
 import AddUser from '@/components/AddUser'
 import VueTables from 'vue-tables-2'
+import VueForm from 'vueform'
+import Vuelidate from 'vuelidate'
+import VueSweetalert from 'vue-sweetalert'
+import { required } from 'vuelidate/lib/validators'
+
+Vue.use(VueForm, {
+  inputClasses: {
+    valid: 'form-control-success',
+    invalid: 'form-control-danger'
+  }
+})
+Vue.use(Vuelidate)
+Vue.use(VueSweetalert)
 
 Vue.use(VueTables.ClientTable, {compileTemplates: true, filterByColumn: true})
 Vue.use(Cookies)
@@ -66,6 +106,9 @@ export default {
       id: null,
       media: null,
       review: null,
+      submitStatus: null,
+      update: 'false',
+      newUserName: '',
       errors: [],
       hasMedia: 'false',
       hasReview: 'false',
@@ -80,13 +123,20 @@ export default {
           remove: 'Remove'
         }
       },
-      reviewColumns: ['review', 'score'],
+      reviewColumns: ['review.review', 'review.score', 'view', 'remove'],
       reviewOptions: {
         headings: {
           review: 'Review',
-          score: 'Rating'
+          score: 'Rating',
+          view: 'View',
+          remove: 'Remove'
         }
       }
+    }
+  },
+  validations: {
+    newUserName: {
+      required
     }
   },
   created () {
@@ -182,12 +232,11 @@ export default {
       let token = {
         token: this.$cookies.get('token')
       }
-      if (token === null) {
-        console.log('Invalid Token')
-      } else {
+      console.log(token.token)
+      if (token.token != null) {
         WatchThisService.authToken(token)
           .then(response => {
-            if (response.data === 'Valid Token') {
+            if (response.data !== 'Invalid Token') {
               WatchThisService.removeMedia(id)
                 .then(response => {
                   console.log(response.data)
@@ -203,6 +252,65 @@ export default {
           .catch(error => {
             console.log(error)
           })
+      } else {
+        console.log('Invalid Token')
+      }
+    },
+    removeReview: function (mediaId, id) {
+      let token = {
+        token: this.$cookies.get('token')
+      }
+      console.log(token.token)
+      if (token.token != null) {
+        WatchThisService.authToken(token)
+          .then(response => {
+            if (response.data !== 'Invalid Token') {
+              WatchThisService.removeReview(mediaId, id)
+                .then(response => {
+                  console.log(response.data)
+                  this.loadReview()
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+            } else {
+              console.log('Invalid Token')
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      } else {
+        console.log('Invalid Token')
+      }
+    },
+    showUpdateUserName: function () {
+      this.update = 'true'
+    },
+    cancelUpdateUserName: function () {
+      this.update = 'false'
+      this.newUserName = ''
+    },
+    submitUpdate: function () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        this.submitStatus = 'PENDING'
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+          let newUserObject = {
+            newUserName: this.newUserName
+          }
+          WatchThisService.updateUserName(this.$cookies.get('id'), newUserObject)
+            .then(response => {
+              console.log(response)
+            })
+            .catch(error => {
+              this.errors.push(error)
+            })
+          this.update = 'false'
+        })
       }
     }
   }

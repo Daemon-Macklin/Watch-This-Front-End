@@ -49,6 +49,13 @@ export default {
     return Api().get(`/media/findUserReview/${id}`)
   },
   removeMedia (id) {
-    return Api().delete(`media/${id}/removeMedia`)
+    return Api().delete(`/media/${id}/removeMedia`)
+  },
+  removeReview (id, reviewId) {
+    return Api().delete(`/media/${id}/removeReview/${reviewId}`)
+  },
+  updateUserName (id, userName) {
+    return Api().put(`/user/${id}/updateUserName`, userName,
+      {headers: {'Content-type': 'application/json'}})
   }
 }
