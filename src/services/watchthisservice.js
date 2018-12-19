@@ -57,5 +57,11 @@ export default {
   updateUserName (id, userName) {
     return Api().put(`/user/${id}/updateUserName`, userName,
       {headers: {'Content-type': 'application/json'}})
+  },
+  getHighestMedia () {
+    return Api().get('/getHighestRating')
+  },
+  getHighestReview () {
+    return Api().get('/getHighestUpvote')
   }
 }

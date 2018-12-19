@@ -73,13 +73,15 @@
             <b-card :key="review._id" class="mb-4" footer-tag="footer">
               <div class="ui centered grey raised card">
                 <div class="content">
-                  <div class="header">{{review.score}}</div>
-                  <div class="description">
-                    {{review.review}}
-                  </div>
+                  <div class="header">Score: {{review.score}}</div>
+                </div>
+                <div class="description">
+                  {{review.review}}
                 </div>
                 <div class="extra content">
+                  <b-link>
                   <i class="check icon" v-on:click="upvote(review._id)"></i>
+                  </b-link>
                   {{review.upvotes}}
                 </div>
               </div>
