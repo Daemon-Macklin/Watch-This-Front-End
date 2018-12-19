@@ -71,12 +71,9 @@
         <div class="row">
           <div class="col-4" v-for="review in media.reviews" :key="review._id">
             <b-card :key="review._id" class="mb-4" footer-tag="footer">
-              <div class="ui card">
+              <div class="ui centered grey raised card">
                 <div class="content">
                   <div class="header">{{review.score}}</div>
-                  <div class="meta">
-                    {{getUserName(review.userId)}}
-                  </div>
                   <div class="description">
                     {{review.review}}
                   </div>

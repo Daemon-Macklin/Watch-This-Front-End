@@ -25,6 +25,11 @@
               <i class="center aligned fa fa-search " style="padding: 5px"></i>
             </b-link>
           </template>
+          <template slot="remove" slot-scope="props">
+            <b-link>
+              <i class="center aligned trash icon" v-on:click="removeMedia(props.row._id)"></i>
+            </b-link>
+          </template>
         </v-client-table>
         <h2 v-if="hasMedia === 'false'">No Media Submitted</h2>
       </div>
@@ -64,14 +69,15 @@ export default {
       errors: [],
       hasMedia: 'false',
       hasReview: 'false',
-      mediaColumns: ['type', 'title', 'genre', 'rating', '_id'],
+      mediaColumns: ['type', 'title', 'genre', 'rating', '_id', 'remove'],
       mediaOptions: {
         headings: {
           type: 'Type',
           title: 'Title',
           genre: 'Genre',
           rating: 'Rating',
-          _id: 'View'
+          _id: 'View',
+          remove: 'Remove'
         }
       },
       reviewColumns: ['review', 'score'],
@@ -97,12 +103,9 @@ export default {
       if (token.token != null) {
         WatchThisService.authToken(token)
           .then(response => {
-            console.log('Here2')
             if (response.data === 'Invalid Token') {
-              console.log(response.data)
               this.logout()
             } else {
-              console.log('Valid Token')
               this.getUserData()
             }
           })
@@ -146,7 +149,7 @@ export default {
       WatchThisService.fetchAllUserMedia(this.id)
         .then(response => {
           this.media = response.data
-          if (this.media.length === 'No media found for user') {
+          if (this.media === 'No media found for user') {
             this.hasMedia = 'false'
           } else {
             this.hasMedia = 'true'
@@ -173,6 +176,34 @@ export default {
           this.errors.push(error)
           console.log(error)
         })
+    },
+    removeMedia: function (id) {
+      console.log(id)
+      let token = {
+        token: this.$cookies.get('token')
+      }
+      if (token === null) {
+        console.log('Invalid Token')
+      } else {
+        WatchThisService.authToken(token)
+          .then(response => {
+            if (response.data === 'Valid Token') {
+              WatchThisService.removeMedia(id)
+                .then(response => {
+                  console.log(response.data)
+                  this.loadMedia()
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+            } else {
+              console.log('Invalid Token')
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     }
   }
 }

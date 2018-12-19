@@ -47,5 +47,8 @@ export default {
   },
   fetchAllUserReview (id) {
     return Api().get(`/media/findUserReview/${id}`)
+  },
+  removeMedia (id) {
+    return Api().delete(`media/${id}/removeMedia`)
   }
 }
