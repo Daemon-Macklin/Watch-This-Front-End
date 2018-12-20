@@ -28,3 +28,9 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## Hosting
+The App can be used on this [site](https://watch-this-aa759.firebaseapp.com/#/#)
+
+## Documentation
+Further Documentation can be viewed [here](https://github.com/Daemon-Macklin/Watch-This-Front-End/blob/master/DMacklinWebAppReport.pdf)
