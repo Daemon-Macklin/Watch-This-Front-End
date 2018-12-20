@@ -41,10 +41,12 @@ export default {
       }
     }
   },
+  // When this page loads do this
   created () {
     this.loadGames()
   },
   methods: {
+    // Loads all of the games
     loadGames: function () {
       WatchThisService.fetchAllGames()
         .then(response => {

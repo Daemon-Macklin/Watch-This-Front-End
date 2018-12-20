@@ -89,6 +89,7 @@ export default {
     }
   },
   methods: {
+    // Method to upload media object to backend
     submitMedia: function (media) {
       WatchThisService.postMedia(media)
         .then(response => {
@@ -99,6 +100,7 @@ export default {
           console.log(error)
         })
     },
+    // Method to get data for submitting media
     submit () {
       console.log('submiting...')
       console.log('submit!')

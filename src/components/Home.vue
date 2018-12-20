@@ -201,12 +201,14 @@ export default {
       errors: []
     }
   },
+  // When page is loaded do this
   created () {
     this.getStats()
     this.getRandomMedia()
     this.getHomeData()
   },
   methods: {
+    // Method to get the statistics to display
     getStats: function () {
       WatchThisService.getStats()
         .then(response => {
@@ -217,6 +219,7 @@ export default {
           this.errors.push(error)
         })
     },
+    // Method that gets a randomly selected media from the backend
     getRandomMedia: function () {
       WatchThisService.getRandomMedia(this.type)
         .then(response => {
@@ -241,6 +244,7 @@ export default {
           this.error.push(error)
         })
     },
+    // Method that gets the username for the random media
     getUserName: function (id) {
       console.log('Getting username')
       if (id === '') {
@@ -256,6 +260,7 @@ export default {
           })
       }
     },
+    // Method that gets the best media and best review
     getHomeData: function () {
       console.log('Getting data')
       WatchThisService.getHighestMedia()
@@ -276,6 +281,7 @@ export default {
           this.errors.push(error)
         })
     },
+    // Method that gets username for the best review
     getReviewUserName: function () {
       console.log('Here')
       let id = this.highestReview.review.userId

@@ -140,23 +140,35 @@ export default {
       required
     }
   },
+  // When page loads do this
   created () {
     this.isSignedIn()
   },
+  // Other components used in this components
   components: {
     'add-user': AddUser
   },
   methods: {
+    // Method to check if user is signedin
+    // and check token
     isSignedIn: function () {
+      // Create an object called token and insert the
+      // token stored in vue cookies
       let token = {
         token: this.$cookies.get('token')
       }
+      // If the token is not null
       if (token.token != null) {
+        // Send the token to the backend for authentication
         WatchThisService.authToken(token)
           .then(response => {
+            // If the response is "Invalid Token" the token
             if (response.data === 'Invalid Token') {
+              // Log out the user
               this.logout()
             } else {
+              // Else the user has a valid token and we
+              // can get the data
               this.getUserData()
             }
           })
@@ -164,21 +176,29 @@ export default {
             this.errors.push(error)
             console.log(error)
           })
+        // If the token is null
       } else {
+        // Don't sign in the user
         this.signedIn = 'false'
       }
     },
+    // Method to get the users data
     getUserData: function () {
+      // Get the user id stored in the cookies
       let id = this.$cookies.get('id')
       console.log(id)
+      // Get the user with the id
       WatchThisService.getUser(id)
         .then(response => {
           console.log(response)
+          // If the response.data is not null
           if (response.data != null) {
+            // Set all of the relevant data
             this.signedIn = 'true'
             this.id = response.data._id
             this.userName = response.data.userName
             this.email = response.data.email
+            // Load the user data
             this.loadMedia()
             this.loadReview()
           } else {
@@ -189,13 +209,17 @@ export default {
           console.log(error)
         })
     },
+    // Method to log out the user
     logout: function () {
       console.log('Logging out')
+      // Remove the cookies we set
       this.$cookies.remove('token')
       this.$cookies.remove('id')
       this.$cookies.remove('userName')
+      // Send the user to the home page
       window.location = '/home'
     },
+    // Method to get the users media
     loadMedia: function () {
       WatchThisService.fetchAllUserMedia(this.id)
         .then(response => {
@@ -212,6 +236,7 @@ export default {
           console.log(error)
         })
     },
+    // Method to get the users reviews
     loadReview: function () {
       WatchThisService.fetchAllUserReview(this.id)
         .then(response => {
@@ -228,8 +253,10 @@ export default {
           console.log(error)
         })
     },
+    // Method to remove a users media
     removeMedia: function (id) {
       console.log(id)
+      // Get the token and ensure it is valid
       let token = {
         token: this.$cookies.get('token')
       }
@@ -237,7 +264,9 @@ export default {
       if (token.token != null) {
         WatchThisService.authToken(token)
           .then(response => {
+            // If the token is valid
             if (response.data !== 'Invalid Token') {
+              // Remove the media
               WatchThisService.removeMedia(id)
                 .then(response => {
                   console.log(response.data)
@@ -257,7 +286,9 @@ export default {
         console.log('Invalid Token')
       }
     },
+    // Method to remove a review
     removeReview: function (mediaId, id) {
+      // get the token and validate it
       let token = {
         token: this.$cookies.get('token')
       }
@@ -265,7 +296,9 @@ export default {
       if (token.token != null) {
         WatchThisService.authToken(token)
           .then(response => {
+            // If the token is valid
             if (response.data !== 'Invalid Token') {
+              // Remove the review
               WatchThisService.removeReview(mediaId, id)
                 .then(response => {
                   console.log(response.data)
@@ -285,13 +318,16 @@ export default {
         console.log('Invalid Token')
       }
     },
+    // Method to show the update username form
     showUpdateUserName: function () {
       this.update = 'true'
     },
+    // Method to hide the username form
     cancelUpdateUserName: function () {
       this.update = 'false'
       this.newUserName = ''
     },
+    // Method to get update username
     submitUpdate: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {

@@ -41,10 +41,12 @@ export default {
       }
     }
   },
+  // When page loads do this
   created () {
     this.loadMovies()
   },
   methods: {
+    // this page loads all of the movies
     loadMovies: function () {
       WatchThisService.fetchAllMovies()
         .then(response => {

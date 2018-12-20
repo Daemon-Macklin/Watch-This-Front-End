@@ -49,6 +49,7 @@ export default {
       submitStatus: null
     }
   },
+  // Validations enforced on form data
   validations: {
     reviewText: {
       required,
@@ -61,6 +62,7 @@ export default {
     }
   },
   methods: {
+    // Method to send new review to backend
     submitReview: function (review) {
       WatchThisService.postReview(review, this.$route.params.mediaId)
         .then(response => {
@@ -72,6 +74,7 @@ export default {
           console.log(error)
         })
     },
+    // Method to get data for new review
     submit () {
       console.log('submiting...')
       this.$v.$touch()

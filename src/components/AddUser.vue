@@ -53,6 +53,7 @@ export default {
       password: ''
     }
   },
+  // Validations enforced on form data
   validations: {
     userName: {
       required,
@@ -68,6 +69,7 @@ export default {
     }
   },
   methods: {
+    // Method to get user data from form
     submit: function () {
       console.log('submiting...')
       this.$v.$touch()
@@ -86,6 +88,7 @@ export default {
         }, 500)
       }
     },
+    // Method to send data to database
     submitUser: function (user) {
       WatchThisService.addUser(user)
         .then(response => {

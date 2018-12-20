@@ -42,10 +42,12 @@ export default {
       }
     }
   },
+  // When the page loads do this
   created () {
     this.loadMedia()
   },
   methods: {
+    // Method that loads all of the media
     loadMedia: function () {
       WatchThisService.fetchAllMedia()
         .then(response => {

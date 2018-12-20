@@ -127,11 +127,14 @@ export default {
   components: {
     'add-review': AddReview
   },
+  // When page is loaded do this
   created () {
     this.getMedia()
   },
   methods: {
+    // Method to get media with the id from the path
     getMedia: function () {
+      // Get the id from the path
       let id = this.$route.params.mediaId
       WatchThisService.getMediaById(id)
         .then(response => {
@@ -152,6 +155,7 @@ export default {
               console.log('C')
             }
           }
+          // Sort the reviews
           this.media.reviews = this.quickSort(this.media.reviews)
           this.getUserName(this.media.userId)
         })
@@ -160,6 +164,7 @@ export default {
           // console.log(error)
         })
     },
+    // Method used to sort the reviews based on upvotes
     quickSort: function (arr) {
       let len = arr.length
       for (let i = len - 1; i >= 0; i--) {
@@ -173,6 +178,7 @@ export default {
       }
       return arr
     },
+    // Method to get the username of the userid submitted with the media
     getUserName: function (id) {
       console.log('Getting username')
       if (id === '') {
@@ -188,6 +194,7 @@ export default {
           })
       }
     },
+    // Method to upvote a review
     upvote: function (reviewId) {
       console.log('Upvoting')
       WatchThisService.upvote(this.$route.params.mediaId, reviewId)

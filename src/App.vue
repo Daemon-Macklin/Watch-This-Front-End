@@ -101,6 +101,7 @@ export default {
       submitStatus: null
     }
   },
+  // Validations enforced on form
   validations: {
     email: {
       required
@@ -110,6 +111,7 @@ export default {
     }
   },
   methods: {
+    // Method to set selected nav item as the active one
     setActive: function (menuItem) {
       console.log(menuItem)
       try {
@@ -120,6 +122,7 @@ export default {
       document.getElementById(menuItem).setAttribute('class', 'active link item')
       this.activeItem = menuItem
     },
+    // Method to get user data from signin form
     login: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -137,21 +140,30 @@ export default {
         }, 500)
       }
     },
+    // Method to signin
     submitUser: function (user) {
+      // Send user data to backend
       WatchThisService.login(user)
         .then(response => {
+          // If the password is invalid
           if (response.data === 'Invalid Password') {
+            // Inform the user
             console.log('Invalid Password')
             this.submitStatus = 'PASSWORD'
+            // If the email is invalid
           } else if (response.data === "Can't find user") {
+            // Infrom the user
             console.log('User not found')
             this.submitStatus = 'EMAIL'
+            // else signin
           } else {
             this.submitStatus = 'SIGNIN'
             console.log(response.data.userData)
+            // Save the returned userdata to cookies
             this.$cookies.set('id', response.data.userData._id)
             this.$cookies.set('token', response.data.token.toString())
             this.$cookies.set('userName', response.data.userData.userName.toString())
+            // Send the user to the home page
             window.location = '/home'
           }
         })
