@@ -63,5 +63,11 @@ export default {
   },
   getHighestReview () {
     return Api().get('/getHighestUpvote')
+  },
+  getStats () {
+    return Api().get('/getStats')
+  },
+  getRandomMedia (type) {
+    return Api().get(`/media/${type}/pickRandomMedia`)
   }
 }

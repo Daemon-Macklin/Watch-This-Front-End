@@ -18,12 +18,12 @@
         <form @submit.prevent="submitUpdate" class="ui form">
           <div class="ui field">
             <label class="label"> Username
-              <input class="form__input" v-model.trim="$v.newUserName.$model"/>
+              <div class="ui action input">
+                <input type="text" placeholder="New User Name" v-model.trim="$v.newUserName.$model">
+                <button class="ui positive button" value="submit" type="submit" :disabled="submitStatus === 'PENDING'">Update</button>
+              </div>
             </label>
           </div>
-          <p>
-            <button class="ui positive button" value="submit" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
-          </p>
           <p class="typo__p" v-if="submitStatus === 'ERROR'">UserName Invalid</p>
         </form>
       </div>

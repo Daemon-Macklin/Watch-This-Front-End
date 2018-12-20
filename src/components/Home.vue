@@ -54,28 +54,208 @@
             </div>
            </div>
          </div>
-       </div>
+    <h4 class="ui horizontal divider"></h4>
+    <div class="ui center aligned raised container segment" id="app">
+      <h2 class="ui header" id="title"> Statistics </h2>
+      <div class="ui inverted tiny six statistics">
+        <div class="statistic">
+          <div class="value">
+            {{stats.totalMedia}}
+          </div>
+          <div class="label">
+            Total Media
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{stats.totalGames}}
+          </div>
+          <div class="label">
+            Total Games
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{stats.totalMovies}}
+          </div>
+          <div class="label">
+            Total Movies
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{stats.totalVotes}}
+          </div>
+          <div class="label">
+            Total UpVotes
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{stats.totalReviews}}
+          </div>
+          <div class="label">
+            Total Reviews
+          </div>
+        </div>
+        <div class="statistic">
+          <div class="value">
+            {{stats.averageRating}}
+          </div>
+          <div class="label">
+            Average Rating
+          </div>
+        </div>
+      </div>
+    </div>
+    <h4 class="ui horizontal divider"></h4>
+    <div class="ui center aligned raised container segment" id="app">
+      <h2 class="ui header" id="title"> About {{media.title}} </h2>
+      <div class="ui two cards">
+        <div class="ui left aligned center aligned raised card">
+          <div class="ui left aligned raised container segment">
+            <div class="ui relaxed divided items">
+              <div class="item">
+                <i class="fa Large middle aligned fa-film" v-if="media.type === 'Movie'"> </i>
+                <i class="fa Large middle aligned fa-gamepad" v-if="media.type === 'Game'"> </i>
+                <div class="content">
+                  <p class="header">  Type </p>
+                  <div class="description">
+                    {{media.type}}
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <i class="Large cog middle aligned icon"></i>
+                <div class="content">
+                  <p class="header">Genre</p>
+                  <div class="description">
+                    {{media.genre}}
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <i class="Large thumbs up outline middle aligned icon" v-if="rating === 'GOOD'"></i>
+                <i class="Large thumbs down outline middle aligned icon" v-if="rating === 'BAD'"></i>
+                <div class="content">
+                  <p class="header">Rating</p>
+                  <div class="description">
+                    {{media.rating}}
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <i class="Large user middle aligned icon"></i>
+                <div class="content">
+                  <p class="header">Submitted by</p>
+                  <div class="description">
+                    {{userName}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui right aligned center aligned raised card">
+          <div class="ui left aligned raised container segment" style="width:100%; height:100%;">
+            <youtube style="width:100%; height:100%;" :video-id="videoId" ref="youtube"></youtube>
+          </div>
+        </div>
+      </div>
+      <h4 class="ui horizontal divider"></h4>
+      <div class="ui center aligned raised container segment">
+        <div class="form group">
+          <button class="ui positive button" v-on:click="getRandomMedia"> Random Media</button>
+          <select class="ui selection dropdown" id="type" name="type" type="text" v-model="type">
+            <option value="null" selected disabled hidden>Genre</option>
+            <option value="Movie">Movie</option>
+            <option value="Game">Game</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-// import Vue from 'vue'
+import Vue from 'vue'
 import WatchThisService from '@/services/watchthisservice'
+import VueYoutube from 'vue-youtube'
+
+Vue.use(VueYoutube)
 
 export default {
   name: 'Home',
   data () {
     return {
       msg: 'Home Page',
+      rating: 'GOOD',
       highestMovie: null,
       highestReview: null,
       highestReviewUser: '',
+      type: 'Movie',
+      media: null,
+      userName: 'Anonymous',
+      videoId: '',
+      stats: null,
       errors: []
     }
   },
   created () {
+    this.getStats()
+    this.getRandomMedia()
     this.getHomeData()
   },
   methods: {
+    getStats: function () {
+      WatchThisService.getStats()
+        .then(response => {
+          this.stats = response.data
+          console.log(this.stats)
+        })
+        .catch(error => {
+          this.errors.push(error)
+        })
+    },
+    getRandomMedia: function () {
+      WatchThisService.getRandomMedia(this.type)
+        .then(response => {
+          this.media = response.data
+          if (this.media.rating < 2.5) {
+            this.rating = 'BAD'
+          }
+          if (this.media.youtubeLink === '') {
+            this.videoId = 'dQw4w9WgXcQ'
+            console.log('A')
+          } else {
+            if (this.media.youtubeLink.substring(0, 5) === 'https') {
+              this.videoId = this.media.youtubeLink.substring(32)
+              console.log('B')
+            } else {
+              this.videoId = this.media.youtubeLink
+              console.log('C')
+            }
+          }
+        })
+        .catch(error => {
+          this.error.push(error)
+        })
+    },
+    getUserName: function (id) {
+      console.log('Getting username')
+      if (id === '') {
+        this.userName = 'Anonymous'
+      } else {
+        WatchThisService.getUserName(id)
+          .then(response => {
+            this.userName = response.data
+          })
+          .catch(error => {
+            this.errors.push(error)
+            this.userName = 'Anonymous'
+          })
+      }
+    },
     getHomeData: function () {
       console.log('Getting data')
       WatchThisService.getHighestMedia()

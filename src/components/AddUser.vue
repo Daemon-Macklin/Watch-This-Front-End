@@ -17,7 +17,7 @@
         </div>
       </div>
       <p>
-        <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Submit</button>
+        <button class="ui positive button" type="submit" :disabled="submitStatus === 'PENDING'">Sign Up</button>
       </p>
       <p class="typo__p" v-if="submitStatus === 'OK'">User Added</p>
       <p class="typo__p" v-if="submitStatus === 'ERROR'">Please Fill in the Form Correctly.</p>

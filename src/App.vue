@@ -41,7 +41,7 @@
           </b-nav-item>
       </b-navbar-nav>
     <div class="ui right fixed vertical menu" id="menu">
-      <div class="ui raised container segment">
+      <div v-if="this.$cookies.get('id') === null" class="ui raised container segment">
       <form @submit.prevent="login" class="ui form">
           <label>Login</label>
           <div class="ui small field">
@@ -62,6 +62,10 @@
         <p class="typo__p" v-if="submitStatus === 'SIGNIN'">Signed In</p>
       </form>
     </div>
+      <div v-if="this.$cookies.get('id') !== null" class="ui raised container segment">
+        <h6>Hello {{this.$cookies.get('userName')}}</h6>
+
+      </div>
     </div>
   <router-view/>
   </div>
