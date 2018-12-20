@@ -158,7 +158,7 @@
         </div>
         <div class="ui right aligned center aligned raised card">
           <div class="ui left aligned raised container segment" style="width:100%; height:100%;">
-            <youtube style="width:100%; height:100%;" :video-id="videoId" ref="youtube"></youtube>
+             <youtube style="width:100%; height:100%;" :video-id="videoId" ref="youtube"></youtube>
           </div>
         </div>
       </div>

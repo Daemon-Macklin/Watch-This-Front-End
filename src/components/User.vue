@@ -123,12 +123,13 @@ export default {
           remove: 'Remove'
         }
       },
-      reviewColumns: ['review.review', 'review.score', 'view', 'remove'],
+      reviewColumns: ['review.review', 'review.score', 'review.upvotes', 'view', 'remove'],
       reviewOptions: {
         headings: {
           review: 'Review',
           score: 'Rating',
           view: 'View',
+          upvotes: 'UpVotes',
           remove: 'Remove'
         }
       }
@@ -305,6 +306,8 @@ export default {
           WatchThisService.updateUserName(this.$cookies.get('id'), newUserObject)
             .then(response => {
               console.log(response)
+              this.$cookies.set('userName', this.newUserName)
+              location.reload()
             })
             .catch(error => {
               this.errors.push(error)
